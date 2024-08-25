@@ -19,9 +19,8 @@ Yo, this is a simple, multithreaded HTTP server implemented from Scratch in Pyth
 1. Clone the repository or download the `multithreaded_http_server.py` file.
 
 2. Run the server:
-   ```python
-   python multithreaded_http_server.py
-   ```
+   ```python multithreaded_http_server.py```
+
 3. By default, the server will start on `127.0.0.1:8080`. You can modify the host and port in the `__main__` section of the script if needed.
 
 4. Access the server through a web browser or HTTP client at `http://127.0.0.1:8080`
