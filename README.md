@@ -1,4 +1,3 @@
-# HTTP-Server
 # Multithreaded HTTP Server
 
 Yo, this is a simple, multithreaded HTTP server implemented from Scratch in Python. It's capable of handling multiple client connections concurrently and serving static files.
