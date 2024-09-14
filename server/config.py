@@ -4,7 +4,7 @@ HOST = '127.0.0.1'
 PORT = 8080         
 
 # Directory to serve public files from
-WEB_ROOT = 'public'  
+WEB_ROOT = 'webapp'  
 
 # Logging settings
 LOG_FILE = 'logs/server.log'

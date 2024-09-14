@@ -4,7 +4,8 @@ import os
 import threading
 import mimetypes
 import logging
-from server.config import WEB_ROOT, HOST, PORT, MAX_CONNECTIONS, LOG_FILE, LOG_LEVEL
+import gzip
+from config import WEB_ROOT, HOST, PORT, MAX_CONNECTIONS, LOG_FILE, LOG_LEVEL
 
 logging.basicConfig(
     filename=LOG_FILE,
@@ -70,24 +71,29 @@ class HTTPServer(TCPServer):
         if request.method == "GET":
             response = self.handle_GET(request)
         elif request.method == "POST": # Not implemented
-            response = self.handle_501_HTTP(request)  
+            response = self.handle_405_method_not_allowed(request)  
         else:
             response = self.handle_501_HTTP(request)
         
         logging.info(f"Handled {request.method} request for {request.uri}")
         return response
     
+    def handle_405_method_not_allowed(self, request):
+        logging.warning(f"405 Method Not Allowed: {request.method} for {request.uri}")
+        response_line = self.response_line(status_code=405)
+        headers_response = self.header_lines({'Allow': 'GET'})
+        blank_line = b"\r\n"
+        response_body = b"<h1>405 Method NOt Allowed</h1>"
+        return b"".join([response_line, headers_response, blank_line, response_body])
+
+    
     def handle_501_HTTP(self, request):
         "Handle request that have not yet been implemented"
-
+        logging.warning(f"501 Not Implemented: {request.method} for {request.uri}")
         response_line = self.response_line(status_code=501)
-
         headers_reponse = self.header_lines()
-
         blank_line = b"\r\n"
-
-        response_body = b"""<h1> NOt IMpleMenTeD YeT<h1>"""
-
+        response_body = b"""<h1>501 NOt Implemented Yet<h1>"""
         return b"".join([response_line, headers_reponse, blank_line, response_body])
 
     def handle_GET(self, request):
@@ -97,20 +103,43 @@ class HTTPServer(TCPServer):
             filename = "index.html"
 
         # Restrict access to files only within the public directory
+        # Ensure the requested file is within the WEB_ROOT directory
         file_path = os.path.join(WEB_ROOT, filename)
-        absolute_file_path = os.path.abspath(file_path)
-
-        if os.path.exists(absolute_file_path) and os.path.isfile(absolute_file_path) and absolute_file_path.startswith(os.path.abspath(WEB_ROOT)):
-            with open(file=filename, mode="rb") as file:
-                response_body = file.read()
-
-            content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
-            file_size = len(response_body)
+        normalized_path = os.path.normpath(file_path)
+        
+        logging.info(f"Requested file: {normalized_path}")
+        
+        if not normalized_path.startswith(WEB_ROOT):
+            logging.warning(f"403 Forbidden: Attempted access to {normalized_path}")
+            return self.handle_403_forbidden()
+        
+        if os.path.exists(normalized_path) and os.path.isfile(normalized_path):
+            try:
+                with open(normalized_path, mode="rb") as file:
+                    response_body = file.read()
+                    logging.info(f"Successfully read file: {normalized_path}")
+            except IOError as e:
+                logging.error(f"Error reading file: {e}")
+                return self.handle_500_internal_server_error()
             
             response_line = self.response_line(status_code=200)
+            
+            content_type = mimetypes.guess_type(filename)[0] or 'application/octet-stream'
+            
+            
+            # Compress the response if it's compressible
+            if self.is_compressible(content_type):
+                response_body = gzip.compress(response_body)
+                extra_headers = {
+                    'Content-Encoding': 'gzip'
+                }
+                logging.info(f"Compressed response for {filename}")
+            else:
+                extra_headers = {}
+
             extra_headers = {
                 'Content-Type': content_type,
-                'Content-Length': file_size,
+                'Content-Length': len(response_body),
                 'Connection': 'close'
             }
             header_response = self.header_lines(extra_headers)
@@ -123,9 +152,47 @@ class HTTPServer(TCPServer):
                 'Connection': 'close'
             }
             header_response = self.header_lines(extra_headers)
-
         blank_line = b"\r\n"
         return b"".join([response_line, header_response, blank_line, response_body])
+
+    def handle_404_not_found(self):
+        response_line = self.response_line(status_code=404)
+        response_body = b"<h1>404 Page Not Found</h1>"
+        extra_headers = {
+            'Content-Type': 'text/html',
+            'Content-Length': len(response_body),
+            'Connection': 'close'
+        }
+        header_response = self.header_lines(extra_headers)
+        blank_line = b"\r\n"
+        return b"".join([response_line, header_response, blank_line, response_body])
+
+    def handle_403_forbidden(self):
+        response_line = self.response_line(status_code=403)
+        response_body = b"<h1>403 Forbidden</h1>"
+        extra_headers = {
+            'Content-Type': 'text/html',
+            'Content-Length': len(response_body),
+            'Connection': 'close'
+        }
+        header_response = self.header_lines(extra_headers)
+        blank_line = b"\r\n"
+        return b"".join([response_line, header_response, blank_line, response_body])
+
+
+    def handle_500_internal_server_error(self):
+        logging.error("500 Internal Server Error")
+        response_line = self.response_line(status_code=500)
+        response_body = b"<h1>500 Internal Server Error</h1>"
+        extra_headers = {
+            'Content-Type': 'text/html',
+            'Content-Length': len(response_body),
+            'Connection': 'close'
+        }
+        header_response = self.header_lines(extra_headers)
+        blank_line = b"\r\n"
+        return b"".join([response_line, header_response, blank_line, response_body])
+
 
     def response_line(self, status_code):
         """"Returns the response line of the HTTP response"""
@@ -133,25 +200,25 @@ class HTTPServer(TCPServer):
         reason_phrase = http.client.responses.get(status_code, "Unknown Status Code")
         #construst the response line
         line = f"HTTP/1.1 {status_code} {reason_phrase}"
-
-        return line.encode()#encode it to byte
+        #encode it to byte
+        return line.encode()
     
     def header_lines(self, extra_headers=None):
-        """Returns headers
-        The `extra_headers` can be a dict for sending 
-        extra headers for the current response
+        """Returns headers. The `extra_headers` is a dict for sending extra headers for the current response
         """
-        headers_copy = self.headers.copy() # make a local copy of headers
-
+        # make a local copy of headers
+        headers_copy = self.headers.copy()
         if extra_headers:
             headers_copy.update(extra_headers)
-
         headers = ""
-
         for h in headers_copy:
             headers += f"{h}: {headers_copy[h]}\r\n" 
-
         return headers.encode() # call encode to convert str to bytes
+
+    def is_compressible(self, content_type):
+        compressible_types = ['text/', 'application/javascript', 'application/json', 'application/xml']
+        return any(content_type.startswith(t) for t in compressible_types)
+
 
 class HTTPRequest:
     def __init__(self, data):
@@ -164,25 +231,21 @@ class HTTPRequest:
 
     def parse(self, data):
         lines = data.split(b"\r\n")
-
         request_line = lines[0]
-        
         words = request_line.split(b" ")
-        
         # call decode to convert bytes to str
         self.method = words[0].decode() 
-
         if len(words) > 1:
             # we put this in an if-block because sometimes 
             # browsers don't send uri for homepage
             self.uri = words[1].decode() # call decode to convert bytes to str
-
         if len(words) > 2:
-            self.http_version = words[2]
+            self.http_version = words[2].decode()
+        logging.info(f"Parsed request: Method={self.method}, URI={self.uri}, HTTP Version={self.http_version}")
 
 
 
 if __name__ == "__main__":
-
+    logging.info("Starting HTTP Server")
     server = HTTPServer()
     server.run_forever()

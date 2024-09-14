@@ -1,0 +1,94 @@
+2024-09-14 14:11:49,115 - INFO - Server started on 127.0.0.1:8080
+2024-09-14 14:12:03,060 - INFO - Connection from ('127.0.0.1', 39882)
+2024-09-14 14:12:03,061 - INFO - Handled GET request for /index.html
+2024-09-14 14:12:03,062 - INFO - Request handled successfully
+2024-09-14 14:12:03,065 - INFO - Connection from ('127.0.0.1', 39896)
+2024-09-14 14:12:04,198 - INFO - Handled GET request for /favicon.ico
+2024-09-14 14:12:04,199 - INFO - Request handled successfully
+2024-09-14 14:12:25,982 - INFO - Connection from ('127.0.0.1', 44086)
+2024-09-14 14:12:25,983 - INFO - Handled GET request for /
+2024-09-14 14:12:25,983 - INFO - Request handled successfully
+2024-09-14 14:12:25,984 - INFO - Connection from ('127.0.0.1', 44088)
+2024-09-14 14:12:59,333 - INFO - Server started on 127.0.0.1:8080
+2024-09-14 14:13:07,235 - INFO - Connection from ('127.0.0.1', 51618)
+2024-09-14 14:13:07,238 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:07,248 - INFO - Connection from ('127.0.0.1', 51634)
+2024-09-14 14:13:07,251 - INFO - Connection from ('127.0.0.1', 51650)
+2024-09-14 14:13:08,332 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:08,334 - INFO - Connection from ('127.0.0.1', 44508)
+2024-09-14 14:13:08,334 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:08,335 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:08,336 - INFO - Connection from ('127.0.0.1', 44510)
+2024-09-14 14:13:08,337 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:11,040 - INFO - Connection from ('127.0.0.1', 44516)
+2024-09-14 14:13:11,042 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:11,042 - INFO - Connection from ('127.0.0.1', 44530)
+2024-09-14 14:13:16,101 - INFO - Connection from ('127.0.0.1', 44532)
+2024-09-14 14:13:16,102 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:16,103 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:16,104 - INFO - Connection from ('127.0.0.1', 44542)
+2024-09-14 14:13:16,105 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:29,614 - INFO - Connection from ('127.0.0.1', 53518)
+2024-09-14 14:13:29,615 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:29,615 - INFO - Connection from ('127.0.0.1', 53528)
+2024-09-14 14:13:30,660 - INFO - Connection from ('127.0.0.1', 53530)
+2024-09-14 14:13:30,663 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:30,664 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:30,665 - INFO - Connection from ('127.0.0.1', 53540)
+2024-09-14 14:13:30,666 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:13:59,115 - INFO - Server started on 127.0.0.1:8080
+2024-09-14 14:14:11,789 - INFO - Connection from ('127.0.0.1', 47170)
+2024-09-14 14:14:11,790 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:14:11,798 - INFO - Connection from ('127.0.0.1', 47182)
+2024-09-14 14:14:11,798 - INFO - Connection from ('127.0.0.1', 47186)
+2024-09-14 14:14:12,842 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:14:12,843 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:14:12,844 - INFO - Connection from ('127.0.0.1', 47192)
+2024-09-14 14:14:12,844 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:14:17,472 - INFO - Connection from ('127.0.0.1', 47200)
+2024-09-14 14:14:17,472 - INFO - Handled GET request for /img/shin,jpg
+2024-09-14 14:14:17,472 - INFO - Request handled successfully
+2024-09-14 14:14:17,474 - INFO - Connection from ('127.0.0.1', 47210)
+2024-09-14 14:14:23,387 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:14:23,388 - INFO - Connection from ('127.0.0.1', 60916)
+2024-09-14 14:14:23,388 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:14:24,444 - INFO - Connection from ('127.0.0.1', 60920)
+2024-09-14 14:14:24,445 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:14:24,446 - INFO - Connection from ('127.0.0.1', 60930)
+2024-09-14 14:14:29,469 - INFO - Connection from ('127.0.0.1', 37828)
+2024-09-14 14:14:29,470 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:14:29,471 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:14:29,472 - INFO - Connection from ('127.0.0.1', 37832)
+2024-09-14 14:14:29,473 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:21:33,232 - INFO - Server started on 127.0.0.1:8080
+2024-09-14 14:21:39,324 - INFO - Connection from ('127.0.0.1', 46016)
+2024-09-14 14:21:39,325 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:21:39,331 - INFO - Connection from ('127.0.0.1', 46020)
+2024-09-14 14:21:39,331 - INFO - Connection from ('127.0.0.1', 46022)
+2024-09-14 14:21:47,925 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:21:47,926 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:21:47,927 - INFO - Connection from ('127.0.0.1', 46038)
+2024-09-14 14:21:47,928 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:21:48,563 - INFO - Connection from ('127.0.0.1', 54552)
+2024-09-14 14:21:48,564 - INFO - Connection from ('127.0.0.1', 54556)
+2024-09-14 14:21:48,565 - ERROR - Error handling request: [Errno 2] No such file or directory: 'img/shin.jpg'
+2024-09-14 14:21:55,526 - INFO - Connection from ('127.0.0.1', 54570)
+2024-09-14 14:21:55,526 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:21:55,527 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:21:56,573 - INFO - Connection from ('127.0.0.1', 54582)
+2024-09-14 14:21:56,573 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:21:56,574 - INFO - Connection from ('127.0.0.1', 54592)
+2024-09-14 14:22:01,598 - INFO - Connection from ('127.0.0.1', 45046)
+2024-09-14 14:22:01,599 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:22:01,599 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:22:01,600 - INFO - Connection from ('127.0.0.1', 45048)
+2024-09-14 14:22:01,601 - ERROR - Error handling request: [Errno 2] No such file or directory: 'index.html'
+2024-09-14 14:28:50,409 - INFO - Server started on 127.0.0.1:8080
+2024-09-14 14:28:53,814 - INFO - Connection from ('127.0.0.1', 50590)
+2024-09-14 14:28:53,828 - INFO - Handled GET request for /index.html
+2024-09-14 14:28:53,828 - INFO - Request handled successfully
+2024-09-14 14:28:53,848 - INFO - Connection from ('127.0.0.1', 50598)
+2024-09-14 14:29:55,851 - INFO - Connection from ('127.0.0.1', 37334)
+2024-09-14 14:29:55,852 - INFO - Handled GET request for /img/shin.jpg
+2024-09-14 14:29:55,852 - INFO - Request handled successfully
+2024-09-14 14:29:55,861 - INFO - Connection from ('127.0.0.1', 37344)
