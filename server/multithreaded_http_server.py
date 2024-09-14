@@ -3,12 +3,21 @@ import http.client
 import os
 import threading
 import mimetypes
+import logging
+from server.config import WEB_ROOT, HOST, PORT, MAX_CONNECTIONS, LOG_FILE, LOG_LEVEL
 
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=getattr(logging, LOG_LEVEL.upper(), logging.INFO),
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
 class TCPServer:
-    def __init__(self, host='127.0.0.1', port=8080):
+    def __init__(self, host=HOST, port=PORT):
         self.host = host
         self.port = port
+
+
 
     def run_forever(self):
         #create the socket object
@@ -18,22 +27,28 @@ class TCPServer:
             #bind the socket to an IP addr and port
             server_socket.bind((self.host, self.port))
             #put the socket in listening mode for any new connection
-            server_socket.listen(5)
+            server_socket.listen(MAX_CONNECTIONS)
             #print the addr of the server (ip addr and port)
-            print("Listening at", server_socket.getsockname())
+            logging.info(f"Server started on {self.host}:{self.port}")
 
             while True:
                 client_socket, client_addr = server_socket.accept()
-                print("Connected by", client_addr)
+                logging.info(f"Connection from {client_addr}")
                 client_thread = threading.Thread(target = self.handle_client, args=(client_socket,))
                 client_thread.start()
 
-    def handle_client(self, socket):
-            with socket:
-                data = socket.recv(1024)
+
+    def handle_client(self, client_socket):
+        """Handle each client request."""
+        with client_socket:
+            try:
+                data = client_socket.recv(1024)
                 if data:
                     response = self.handle_request(data)
-                    socket.sendall(response)
+                    client_socket.sendall(response)
+                    logging.info(f"Request handled successfully")
+            except Exception as e:
+                logging.error(f"Error handling request: {e}")
 
     def handle_request(self, data):
         """Handles incoming data and returns a response.
@@ -42,26 +57,24 @@ class TCPServer:
         return data
     
 class HTTPServer(TCPServer):
-
+    
     headers = {
         'Server': '3x7Server',
         'Content-Type': 'text/html',
     }
 
-
     def handle_request(self, data):
         """Handles the incoming request. Compiles and returns the response"""
-        
         request = HTTPRequest(data)
 
         if request.method == "GET":
             response = self.handle_GET(request)
-        elif request.method == "POST":
-            pass
+        elif request.method == "POST": # Not implemented
+            response = self.handle_501_HTTP(request)  
         else:
             response = self.handle_501_HTTP(request)
         
-        response
+        logging.info(f"Handled {request.method} request for {request.uri}")
         return response
     
     def handle_501_HTTP(self, request):
@@ -83,7 +96,11 @@ class HTTPServer(TCPServer):
         if filename == "":
             filename = "index.html"
 
-        if os.path.exists(filename):
+        # Restrict access to files only within the public directory
+        file_path = os.path.join(WEB_ROOT, filename)
+        absolute_file_path = os.path.abspath(file_path)
+
+        if os.path.exists(absolute_file_path) and os.path.isfile(absolute_file_path) and absolute_file_path.startswith(os.path.abspath(WEB_ROOT)):
             with open(file=filename, mode="rb") as file:
                 response_body = file.read()
 
@@ -140,8 +157,8 @@ class HTTPRequest:
     def __init__(self, data):
         self.method = None
         self.uri = None
-        self.http_version = "1.1" # default to HTTP/1.1 if request doesn't provide a version
-
+        # default to HTTP/1.1 if request doesn't provide a version
+        self.http_version = "1.1" 
         # call self.parse() method to parse the request data
         self.parse(data)
 
@@ -151,8 +168,9 @@ class HTTPRequest:
         request_line = lines[0]
         
         words = request_line.split(b" ")
-
-        self.method = words[0].decode() # call decode to convert bytes to str
+        
+        # call decode to convert bytes to str
+        self.method = words[0].decode() 
 
         if len(words) > 1:
             # we put this in an if-block because sometimes 
